@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Avaliação Comportamental em Vendas</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:system-ui,-apple-system,sans-serif;background:#f5f5f0;color:#1a1a1a}
+    .screen{display:none;padding:1.5rem 1rem;min-height:100vh}
+    .screen.active{display:block}
+    .btn-primary{background:#1a1a1a;color:#fff;border:none;padding:13px 28px;border-radius:12px;font-size:15px;font-weight:500;cursor:pointer;width:100%;transition:opacity .2s}
+    .btn-primary:hover{opacity:.82}
+    .btn-secondary{background:transparent;color:#1a1a1a;border:1px solid #ccc;padding:9px 18px;border-radius:8px;font-size:14px;cursor:pointer;transition:background .2s}
+    .btn-secondary:hover{background:#f0f0e8}
+    .btn-small{background:transparent;color:#666;border:1px solid #ddd;padding:5px 12px;border-radius:8px;font-size:12px;cursor:pointer}
+    .btn-small:hover{background:#f0f0e8}
+    .card{background:#fff;border:1px solid #e8e8e0;border-radius:12px;padding:1.25rem}
+    .mcard{background:#f5f5f0;border-radius:8px;padding:.875rem;text-align:center}
+    .mlabel{font-size:11px;color:#666;margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em}
+    .mval{font-size:22px;font-weight:500}
+    .tag{display:inline-block;font-size:11px;padding:3px 9px;border-radius:20px;font-weight:500}
+    .tg{background:#EAF3DE;color:#3B6D11}
+    .ta{background:#FAEEDA;color:#854F0B}
+    .tr{background:#FCEBEB;color:#A32D2D}
+    .tb{background:#E6F1FB;color:#185FA5}
+    .tgray{background:#F1EFE8;color:#5F5E5A}
+    .tp{background:#EEEDFE;color:#534AB7}
+    textarea,input[type=text]{width:100%;padding:11px 13px;border:1px solid #ccc;border-radius:8px;font-size:15px;background:#fff;color:#1a1a1a;font-family:inherit;resize:none}
+    textarea:focus,input[type=text]:focus{outline:none;border-color:#888}
+    .pbar-bg{background:#f0f0e8;border-radius:20px;height:5px;overflow:hidden}
+    .pbar-fill{height:100%;border-radius:20px;transition:width .5s ease}
+    .avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:500;font-size:13px;flex-shrink:0}
+    .tab-btn{padding:8px 16px;border:none;background:transparent;font-size:13px;color:#666;cursor:pointer;border-bottom:2px solid transparent}
+    .tab-btn.active{color:#1a1a1a;border-bottom-color:#1a1a1a}
+    .signal-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:5px}
+    .rq{font-size:13px;color:#555;font-style:italic;background:#f5f5f0;padding:8px 11px;border-radius:8px;margin-top:5px;border-left:2px solid #ddd}
+    .flag-row{display:flex;gap:8px;align-items:flex-start;padding:8px 0;border-bottom:1px solid #f0f0e8}
+    .timer-num{font-size:13px;font-weight:500;color:#666;min-width:28px;text-align:right}
+    .timer-urgent{color:#A32D2D}
+    .center{text-align:center}
+    .max460{max-width:460px;margin:0 auto;padding-top:1.5rem}
+    .max540{max-width:540px;margin:0 auto}
+    .max680{max-width:680px;margin:0 auto}
+  </style>
+</head>
+<body>
+
+<div id="app">
+
+<!-- HOME -->
+<div class="screen active" id="screen-home">
+<div class="max460">
+  <div class="center" style="margin-bottom:2rem">
+    <div style="width:52px;height:52px;background:#EEEDFE;border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#534AB7" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    </div>
+    <h1 style="font-size:20px;font-weight:500;margin-bottom:7px">Avaliação comportamental em vendas</h1>
+    <p style="color:#666;font-size:14px;line-height:1.65">5 clientes reais. O sistema avalia como você se comporta — não o que você escreve.</p>
+  </div>
+
+  <div class="card" style="margin-bottom:1.25rem">
+    <p style="font-size:12px;font-weight:500;color:#666;margin-bottom:12px;text-transform:uppercase;letter-spacing:.04em">O que será avaliado</p>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <div style="width:6px;height:6px;border-radius:50%;background:#185FA5;flex-shrink:0;margin-top:6px"></div>
+        <div><p style="font-size:14px;font-weight:500">Persistência</p><p style="font-size:12px;color:#666">Você continua tentando mesmo diante de negativas?</p></div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <div style="width:6px;height:6px;border-radius:50%;background:#0F6E56;flex-shrink:0;margin-top:6px"></div>
+        <div><p style="font-size:14px;font-weight:500">Adaptação</p><p style="font-size:12px;color:#666">Você muda de abordagem ou repete o mesmo argumento?</p></div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <div style="width:6px;height:6px;border-radius:50%;background:#854F0B;flex-shrink:0;margin-top:6px"></div>
+        <div><p style="font-size:14px;font-weight:500">Comunicação</p><p style="font-size:12px;color:#666">Sua resposta avança a conversa ou estagna?</p></div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start">
+        <div style="width:6px;height:6px;border-radius:50%;background:#993556;flex-shrink:0;margin-top:6px"></div>
+        <div><p style="font-size:14px;font-weight:500">Controle emocional</p><p style="font-size:12px;color:#666">Você mantém a postura sob pressão de tempo?</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:1.25rem;background:#FCEBEB;border-color:#F7C1C1">
+    <p style="font-size:12px;font-weight:500;color:#A32D2D;margin-bottom:5px">Sistema anti-burla ativo</p>
+    <p style="font-size:13px;color:#793535;line-height:1.6">O sistema detecta respostas genéricas, repetição de estratégia e falta de evolução. Copiar respostas prontas ou usar IA reduz automaticamente a pontuação.</p>
+  </div>
+
+  <div style="margin-bottom:1rem">
+    <label style="font-size:13px;color:#666;display:block;margin-bottom:5px">Seu nome</label>
+    <input type="text" id="user-name" placeholder="Ex: João Silva" maxlength="40"/>
+  </div>
+  <button class="btn-primary" onclick="startChallenge()" style="margin-bottom:1rem">Iniciar desafio</button>
+  <div class="center"><button class="btn-secondary" onclick="showView('company')" style="font-size:12px;padding:7px 14px">Visão empresa →</button></div>
+</div>
+</div>
+
+<!-- SIM -->
+<div class="screen" id="screen-sim">
+<div class="max540">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+    <div style="display:flex;align-items:center;gap:10px">
+      <span style="font-size:13px;color:#666">Rodada <strong id="round-num">1</strong> de 5</span>
+      <span id="scenario-badge" class="tag tgray">—</span>
+    </div>
+    <div id="timer-disp" class="timer-num">45s</div>
+  </div>
+  <div class="pbar-bg" style="margin-bottom:1.25rem"><div class="pbar-fill" id="rprog" style="width:20%;background:#1a1a1a"></div></div>
+
+  <div class="card" style="margin-bottom:1rem">
+    <div style="display:flex;gap:11px;align-items:flex-start">
+      <div class="avatar" id="c-av" style="background:#EEEDFE;color:#534AB7">CL</div>
+      <div style="flex:1">
+        <p style="font-size:13px;font-weight:500;margin-bottom:5px" id="c-name">Cliente</p>
+        <p style="font-size:15px;line-height:1.65" id="c-msg">—</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="live-signals" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;min-height:24px"></div>
+
+  <div style="position:relative;margin-bottom:.75rem">
+    <textarea id="user-resp" rows="4" placeholder="Responda como faria com esse cliente de verdade..."></textarea>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:7px">
+      <span style="font-size:12px;color:#666" id="char-cnt">0 car.</span>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span id="typing-signal" style="font-size:11px;color:#aaa"></span>
+        <button class="btn-primary" style="width:auto;padding:9px 22px;font-size:14px" onclick="submitRound()">Enviar →</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="prev-fb" style="display:none" class="card">
+    <p style="font-size:11px;font-weight:500;color:#666;margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em">Análise — rodada anterior</p>
+    <div id="fb-signals" style="display:flex;flex-direction:column;gap:6px"></div>
+  </div>
+</div>
+</div>
+
+<!-- RESULT -->
+<div class="screen" id="screen-result">
+<div class="max540">
+  <div class="center" style="padding-top:.5rem;margin-bottom:1.5rem">
+    <div id="r-emoji" style="font-size:36px;margin-bottom:.5rem">🎯</div>
+    <h2 style="font-size:19px;font-weight:500;margin-bottom:4px">Resultado de <span id="r-name">—</span></h2>
+    <p style="font-size:14px;color:#666" id="r-profile">—</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1.25rem">
+    <div class="mcard" style="grid-column:1/-1">
+      <div class="mlabel">Score geral</div>
+      <div class="mval" id="r-total" style="font-size:34px">—</div>
+      <div style="font-size:12px;color:#666;margin-top:2px">de 100 pontos</div>
+    </div>
+    <div class="mcard"><div class="mlabel">Persistência</div><div class="mval" id="r-p">—</div></div>
+    <div class="mcard"><div class="mlabel">Adaptação</div><div class="mval" id="r-a">—</div></div>
+    <div class="mcard"><div class="mlabel">Comunicação</div><div class="mval" id="r-c">—</div></div>
+    <div class="mcard"><div class="mlabel">Controle emocional</div><div class="mval" id="r-e">—</div></div>
+  </div>
+
+  <div class="card" style="margin-bottom:1.25rem">
+    <p style="font-size:12px;font-weight:500;color:#666;margin-bottom:10px;text-transform:uppercase;letter-spacing:.04em">Sinais comportamentais</p>
+    <div id="flag-list"></div>
+  </div>
+
+  <div class="card" style="margin-bottom:1.25rem">
+    <p style="font-size:12px;font-weight:500;color:#666;margin-bottom:12px;text-transform:uppercase;letter-spacing:.04em">Evolução por habilidade</p>
+    <div id="skill-bars"></div>
+  </div>
+
+  <div class="card" style="margin-bottom:1.25rem">
+    <p style="font-size:12px;font-weight:500;color:#666;margin-bottom:10px;text-transform:uppercase;letter-spacing:.04em">Análise de consistência</p>
+    <div id="consistency-report"></div>
+  </div>
+
+  <div class="card" style="margin-bottom:1.5rem">
+    <p style="font-size:12px;font-weight:500;color:#666;margin-bottom:12px;text-transform:uppercase;letter-spacing:.04em">Suas respostas</p>
+    <div id="all-resp"></div>
+  </div>
+
+  <div style="display:flex;gap:8px">
+    <button class="btn-primary" onclick="goHome()" style="flex:1">Tentar novamente</button>
+    <button class="btn-secondary" onclick="showView('company')" style="flex:1">Ver visão empresa</button>
+  </div>
+</div>
+</div>
+
+<!-- COMPANY -->
+<div class="screen" id="screen-company">
+<div class="max680">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem">
+    <div>
+      <h2 style="font-size:18px;font-weight:500">Painel de candidatos</h2>
+      <p style="font-size:12px;color:#666">Score comportamental — ordenado por performance</p>
+    </div>
+    <button class="btn-secondary" onclick="goHome()" style="font-size:12px;padding:7px 14px">← Início</button>
+  </div>
+  <div style="display:flex;border-bottom:1px solid #e8e8e0;margin-bottom:1.25rem">
+    <button class="tab-btn active" id="tab-l" onclick="switchTab('list')">Candidatos</button>
+    <button class="tab-btn" id="tab-d" onclick="switchTab('detail')">Detalhe</button>
+    <button class="tab-btn" id="tab-f" onclick="switchTab('flags')">Alertas</button>
+  </div>
+  <div id="panel-list"></div>
+  <div id="panel-detail" style="display:none"></div>
+  <div id="panel-flags" style="display:none"></div>
+</div>
+</div>
+
+</div>
+
+<script>
+const ROUNDS=[
+  {id:1,client:"Marcos",initials:"MO",bg:"#EEEDFE",fg:"#534AB7",scenario:"Rejeição inicial",tag:"Rejeição",tagCls:"tr",time:45,msg:"Não tenho interesse.",context:"rejeicao"},
+  {id:2,client:"Aline",initials:"AM",bg:"#FAEEDA",fg:"#854F0B",scenario:"Cliente sem tempo",tag:"Pressão",tagCls:"ta",time:30,msg:"Fala rápido, tô sem tempo.",context:"pressa"},
+  {id:3,client:"Roberto",initials:"RS",bg:"#E6F1FB",fg:"#185FA5",scenario:"Objeção de preço",tag:"Preço",tagCls:"tb",time:45,msg:"Pra mim o mais importante é preço. Tem desconto?",context:"preco"},
+  {id:4,client:"Carla",initials:"CL",bg:"#EAF3DE",fg:"#3B6D11",scenario:"Concorrente mais barato",tag:"Concorrência",tagCls:"tg",time:45,msg:"Já vi parecido mais barato. Por que pagaria mais?",context:"concorrencia"},
+  {id:5,client:"Felipe",initials:"FN",bg:"#F1EFE8",fg:"#5F5E5A",scenario:"Cliente indeciso",tag:"Fechamento",tagCls:"tgray",time:40,msg:"Interessante, mas vou pensar. Me manda depois.",context:"indecisao"}
+];
+
+let ST={name:"",round:0,timer:null,tLeft:0,responses:[],typingMetrics:[],startTs:[]};
+let candidates=[];
+try{candidates=JSON.parse(localStorage.getItem("sbev2_cands")||"[]")}catch(e){}
+function saveCand(c){candidates.unshift(c);if(candidates.length>60)candidates=candidates.slice(0,60);try{localStorage.setItem("sbev2_cands",JSON.stringify(candidates))}catch(e){}}
+
+function showView(n){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));document.getElementById("screen-"+n).classList.add("active");if(n==="company")renderCompany();}
+function goHome(){clearInterval(ST.timer);ST={name:"",round:0,timer:null,tLeft:0,responses:[],typingMetrics:[],startTs:[]};showView("home");}
+
+function startChallenge(){
+  ST.name=document.getElementById("user-name").value.trim()||"Anônimo";
+  ST.round=0;ST.responses=[];ST.typingMetrics=[];ST.startTs=[];
+  showView("sim");loadRound(0);
+}
+
+function loadRound(idx){
+  const R=ROUNDS[idx];
+  document.getElementById("round-num").textContent=idx+1;
+  document.getElementById("rprog").style.width=((idx+1)/5*100)+"%";
+  document.getElementById("c-av").textContent=R.initials;
+  document.getElementById("c-av").style.background=R.bg;
+  document.getElementById("c-av").style.color=R.fg;
+  document.getElementById("c-name").textContent=R.client;
+  document.getElementById("c-msg").textContent=R.msg;
+  const badge=document.getElementById("scenario-badge");
+  badge.textContent=R.tag;badge.className="tag "+R.tagCls;
+  document.getElementById("user-resp").value="";
+  document.getElementById("char-cnt").textContent="0 car.";
+  document.getElementById("live-signals").innerHTML="";
+  document.getElementById("typing-signal").textContent="";
+  document.getElementById("prev-fb").style.display="none";
+  ST.startTs[idx]=Date.now();
+  startTimer(R.time,idx);
+}
+
+let pauseCount=0,lastKeyTime=0;
+document.addEventListener("DOMContentLoaded",function(){
+  document.getElementById("user-resp").addEventListener("keydown",function(){
+    const now=Date.now();
+    if(lastKeyTime&&now-lastKeyTime>2500)pauseCount++;
+    lastKeyTime=now;
+  });
+  document.getElementById("user-resp").addEventListener("input",function(){
+    document.getElementById("char-cnt").textContent=this.value.length+" car.";
+    analyzeLive(this.value);
+  });
+});
+
+function analyzeLive(txt){
+  const sigs=[];
+  const words=txt.trim().split(/\s+/).filter(Boolean);
+  const wc=words.length;
+  if(wc<5&&txt.length>3)sigs.push({label:"Muito curto",cls:"tr"});
+  if(wc>80)sigs.push({label:"Muito longo",cls:"ta"});
+  const uniq=new Set(words.map(w=>w.toLowerCase())).size;
+  if(wc>10&&uniq/wc<0.45)sigs.push({label:"Vocabulário repetitivo",cls:"ta"});
+  if(/\?/.test(txt))sigs.push({label:"Faz perguntas",cls:"tg"});
+  document.getElementById("live-signals").innerHTML=sigs.map(s=>`<span class="tag ${s.cls}">${s.label}</span>`).join("");
+}
+
+function startTimer(sec){
+  clearInterval(ST.timer);ST.tLeft=sec;updateTD();
+  ST.timer=setInterval(()=>{ST.tLeft--;updateTD();if(ST.tLeft<=0){clearInterval(ST.timer);submitRound(true);}},1000);
+}
+function updateTD(){
+  const el=document.getElementById("timer-disp");
+  el.textContent=ST.tLeft+"s";
+  el.className=ST.tLeft<=10?"timer-num timer-urgent":"timer-num";
+}
+
+function submitRound(timeout){
+  clearInterval(ST.timer);
+  const resp=document.getElementById("user-resp").value.trim();
+  const idx=ST.round;
+  const R=ROUNDS[idx];
+  const elapsed=(Date.now()-ST.startTs[idx])/1000;
+  const wc=resp.trim().split(/\s+/).filter(Boolean).length;
+  const metric={round:idx+1,context:R.context,scenario:R.scenario,clientMsg:R.msg,response:resp||"(sem resposta)",wc,elapsed,timeout,pauses:pauseCount,timeLimit:R.time,timeUsedPct:Math.min(1,elapsed/R.time)};
+  pauseCount=0;lastKeyTime=0;
+  ST.responses.push(metric);
+  const next=idx+1;
+  if(next<ROUNDS.length){
+    const fb=buildRoundFeedback(metric,ST.responses);
+    showRoundFeedback(fb);
+    ST.round=next;
+    loadRound(next);
+  } else {
+    ST.round=next;
+    showResult();
+  }
+}
+
+function buildRoundFeedback(m,allPrev){
+  const signals=[];
+  if(m.timeout)signals.push({txt:"Tempo esgotado — resposta incompleta",cls:"tr"});
+  if(!m.response||m.response==="(sem resposta)")signals.push({txt:"Sem resposta enviada",cls:"tr"});
+  if(m.wc<8)signals.push({txt:"Resposta muito curta",cls:"tr"});
+  if(m.wc>90)signals.push({txt:"Resposta muito longa — pode ser conteúdo copiado",cls:"ta"});
+  if(m.wc>=12&&m.wc<=70)signals.push({txt:"Extensão adequada",cls:"tg"});
+  if(/\?/.test(m.response))signals.push({txt:"Fez perguntas ao cliente",cls:"tg"});
+  if(m.elapsed<4&&m.wc>20)signals.push({txt:"Resposta muito rápida para o tamanho — possível cópia",cls:"ta"});
+  if(allPrev.length>=2){
+    const prev=allPrev[allPrev.length-2];
+    const lexSim=lexicalSimilarity(m.response,prev.response);
+    if(lexSim>0.55)signals.push({txt:"Alta similaridade com resposta anterior",cls:"tr"});
+    else if(lexSim<0.25)signals.push({txt:"Abordagem diferente da rodada anterior",cls:"tg"});
+  }
+  return signals;
+}
+
+function showRoundFeedback(signals){
+  const el=document.getElementById("prev-fb");
+  const list=document.getElementById("fb-signals");
+  if(!signals.length){el.style.display="none";return;}
+  el.style.display="block";
+  list.innerHTML=signals.map(s=>`<div style="display:flex;gap:8px;align-items:flex-start"><div class="signal-dot" style="background:${s.cls==='tg'?'#3B6D11':s.cls==='tr'?'#A32D2D':'#854F0B'}"></div><p style="font-size:13px">${s.txt}</p></div>`).join("");
+}
+
+function lexicalSimilarity(a,b){
+  if(!a||!b)return 0;
+  const setA=new Set(a.toLowerCase().split(/\W+/).filter(w=>w.length>3));
+  const setB=new Set(b.toLowerCase().split(/\W+/).filter(w=>w.length>3));
+  if(!setA.size||!setB.size)return 0;
+  let inter=0;setA.forEach(w=>{if(setB.has(w))inter++;});
+  return inter/Math.max(setA.size,setB.size);
+}
+
+const ARG_CLUSTERS=[
+  {name:"preco_desconto",words:["desconto","preço","barato","custo","valor","economiz","invest"]},
+  {name:"qualidade",words:["qualidade","melhor","superior","excelente","único","especial"]},
+  {name:"urgencia",words:["hoje","agora","última","prazo","encerra","oferta","oportunidade"]},
+  {name:"pergunta_cliente",words:["?","você","sua","seu","como","quando","qual","precisa"]},
+  {name:"beneficio",words:["resultado","retorno","ganhar","lucrar","eficiência","produtividade"]},
+  {name:"relacionamento",words:["entend","confia","juntos","parceria","apoio","ajud"]}
+];
+
+function getArgProfile(txt){
+  if(!txt)return {};
+  const lower=txt.toLowerCase();
+  const profile={};
+  ARG_CLUSTERS.forEach(cl=>{profile[cl.name]=cl.words.filter(w=>lower.includes(w)).length;});
+  return profile;
+}
+
+function clusterProfileSimilarity(pa,pb){
+  let match=0,total=0;
+  ARG_CLUSTERS.forEach(cl=>{
+    const a=Math.min(1,pa[cl.name]||0),b=Math.min(1,pb[cl.name]||0);
+    if(a||b){total++;if(a&&b)match++;}
+  });
+  return total?match/total:0;
+}
+
+function showResult(){
+  const resps=ST.responses;
+  const analysis=buildFullAnalysis(resps);
+  const scores=analysis.scores;
+  document.getElementById("r-name").textContent=ST.name;
+  document.getElementById("r-total").textContent=scores.total;
+  document.getElementById("r-p").textContent=scores.persist;
+  document.getElementById("r-a").textContent=scores.adapt;
+  document.getElementById("r-c").textContent=scores.comm;
+  document.getElementById("r-e").textContent=scores.emoc;
+  document.getElementById("r-emoji").textContent=scores.total>=78?"🏆":scores.total>=58?"🎯":scores.total>=38?"📈":"💡";
+  document.getElementById("r-profile").textContent=analysis.profile;
+  const skillColors={persist:"#185FA5",adapt:"#0F6E56",comm:"#854F0B",emoc:"#993556"};
+  const skillNames={persist:"Persistência",adapt:"Adaptação",comm:"Comunicação",emoc:"Controle emocional"};
+  document.getElementById("skill-bars").innerHTML=Object.keys(skillColors).map(k=>`<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><span style="font-size:12px;color:#666;min-width:120px">${skillNames[k]}</span><div class="pbar-bg" style="flex:1"><div class="pbar-fill" style="width:${scores[k]}%;background:${skillColors[k]}"></div></div><span style="font-size:13px;font-weight:500;min-width:32px;text-align:right">${scores[k]}</span></div>`).join("");
+  document.getElementById("flag-list").innerHTML=analysis.flags.length?analysis.flags.map(f=>`<div class="flag-row"><div class="signal-dot" style="background:${f.positive?'#3B6D11':'#A32D2D'}"></div><div><p style="font-size:13px">${f.text}</p></div></div>`).join(""):"<p style='font-size:13px;color:#666'>Nenhum sinal anômalo detectado.</p>";
+  document.getElementById("consistency-report").innerHTML=analysis.consistencyBlocks.map(b=>`<div style="margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid #f0f0e8"><p style="font-size:12px;font-weight:500;color:#666;margin-bottom:3px">${b.title}</p><p style="font-size:13px">${b.text}</p></div>`).join("");
+  document.getElementById("all-resp").innerHTML=resps.map(r=>`<div style="margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid #f0f0e8"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px"><p style="font-size:12px;font-weight:500;color:#666">Rodada ${r.round}: "${r.clientMsg}"</p><span style="font-size:11px;color:#aaa">${Math.round(r.elapsed)}s | ${r.wc} palavras</span></div><div class="rq">${r.response}</div></div>`).join("");
+  const cand={id:Date.now(),name:ST.name,scores,profile:analysis.profile,flags:analysis.flags,consistency:analysis.consistencyBlocks,responses:resps,date:new Date().toLocaleDateString("pt-BR")};
+  saveCand(cand);
+  showView("result");
+}
+
+function buildFullAnalysis(resps){
+  let persist=50,adapt=50,comm=50,emoc=50;
+  const flags=[];
+  const consistencyBlocks=[];
+  const noResp=resps.filter(r=>!r.response||r.response==="(sem resposta)"||r.wc<5).length;
+  const timeouts=resps.filter(r=>r.timeout).length;
+  persist-=noResp*12;persist-=timeouts*8;
+  if(noResp===0&&timeouts===0)persist+=15;
+  if(resps.filter(r=>r.wc>=8).length===5)persist+=10;
+  resps.forEach(r=>{if(r.wc>=8)persist+=3;});
+  const argProfiles=resps.map(r=>getArgProfile(r.response));
+  let argDiversity=0;
+  for(let i=1;i<argProfiles.length;i++){
+    const sim=clusterProfileSimilarity(argProfiles[i],argProfiles[i-1]);
+    argDiversity+=(1-sim);
+    if(sim>0.65){adapt-=8;flags.push({text:`Rodadas ${i} e ${i+1}: mesmo argumento central`,positive:false});}
+    else if(sim<0.25){adapt+=8;flags.push({text:`Rodadas ${i} e ${i+1}: abordagem diferente detectada`,positive:true});}
+  }
+  const avgDiv=argDiversity/(argProfiles.length-1||1);
+  if(avgDiv>0.6)adapt+=12;
+  let lexVar=0;
+  for(let i=1;i<resps.length;i++){
+    const ls=lexicalSimilarity(resps[i].response,resps[i-1].response);
+    if(ls>0.55){adapt-=6;}else lexVar++;
+  }
+  if(lexVar>=3)adapt+=8;
+  const questionRounds=resps.filter(r=>/\?/.test(r.response)).length;
+  adapt+=questionRounds*4;
+  if(questionRounds>=3)flags.push({text:"Fez perguntas ao cliente em "+questionRounds+" rodadas",positive:true});
+  const pressaResp=resps.find(r=>r.context==="pressa");
+  if(pressaResp){
+    if(pressaResp.wc>60){adapt-=10;flags.push({text:"Cliente com pressa: resposta longa demais ("+pressaResp.wc+" palavras)",positive:false});}
+    else if(pressaResp.wc<=30&&pressaResp.wc>=5){adapt+=8;flags.push({text:"Adaptou o tamanho da resposta para cliente com pressa",positive:true});}
+  }
+  const wcArr=resps.map(r=>r.wc);
+  const avgWc=wcArr.reduce((a,b)=>a+b,0)/wcArr.length;
+  if(avgWc<8)comm-=20;
+  else if(avgWc>=12&&avgWc<=55)comm+=15;
+  else if(avgWc>80)comm-=10;
+  const allText=resps.map(r=>r.response).join(" ").toLowerCase();
+  const allWords=allText.split(/\W+/).filter(w=>w.length>3);
+  const uniqueRatio=allWords.length>0?new Set(allWords).size/allWords.length:0;
+  if(uniqueRatio<0.35){comm-=12;flags.push({text:"Vocabulário muito repetitivo ao longo do teste",positive:false});}
+  else if(uniqueRatio>0.55)comm+=8;
+  const wcTrend=resps.slice(1).reduce((acc,r,i)=>acc+(r.wc>resps[i].wc?1:-1),0);
+  if(wcTrend>=2){comm+=5;flags.push({text:"Engajamento crescente ao longo das rodadas",positive:true});}
+  else if(wcTrend<=-3){comm-=8;flags.push({text:"Desengajamento progressivo detectado",positive:false});}
+  const timeUsedAvg=resps.reduce((a,r)=>a+r.timeUsedPct,0)/resps.length;
+  if(timeouts>=3){emoc-=20;flags.push({text:timeouts+" rodadas com tempo esgotado",positive:false});}
+  else if(timeouts===0){emoc+=12;}
+  if(timeUsedAvg>0.2&&timeUsedAvg<0.9)emoc+=8;
+  if(timeUsedAvg<0.08){emoc-=8;flags.push({text:"Respostas muito rápidas — possível conteúdo pré-preparado",positive:false});}
+  const allLong=resps.filter(r=>r.wc>80).length;
+  if(allLong>=3){adapt-=10;comm-=8;flags.push({text:allLong+" respostas muito longas — padrão de conteúdo copiado",positive:false});}
+  for(let i=0;i<resps.length;i++){
+    for(let j=i+1;j<resps.length;j++){
+      const sim=lexicalSimilarity(resps[i].response,resps[j].response);
+      if(sim>0.75&&resps[i].wc>10){adapt-=15;flags.push({text:`Respostas das rodadas ${i+1} e ${j+1} quase idênticas`,positive:false});}
+    }
+  }
+  const argUsage={};
+  ARG_CLUSTERS.forEach(cl=>{argUsage[cl.name]=0;});
+  resps.forEach(r=>{const p=getArgProfile(r.response);ARG_CLUSTERS.forEach(cl=>{if(p[cl.name]>0)argUsage[cl.name]++;});});
+  const dominant=Object.entries(argUsage).sort((a,b)=>b[1]-a[1])[0];
+  if(dominant[1]>=4){consistencyBlocks.push({title:"Argumento dominante",text:`Usou "${dominant[0].replace("_"," ")}" em ${dominant[1]} de 5 rodadas — baixa diversidade estratégica.`});adapt-=8;}
+  else{consistencyBlocks.push({title:"Diversidade de argumentos",text:"Variou estratégia ao longo das rodadas — boa adaptação detectada."});}
+  const hasPergunta=resps.filter(r=>/\?/.test(r.response)).length;
+  consistencyBlocks.push({title:"Tentativa de entender o cliente",text:hasPergunta>=3?"Fez perguntas em "+hasPergunta+" rodadas — demonstra orientação ao cliente.":hasPergunta>=1?"Fez perguntas em "+hasPergunta+" rodada(s) — pode desenvolver mais.":"Nunca perguntou ao cliente — postura mais passiva."});
+  const evolucao=wcTrend>=1?"Respostas foram crescendo — sinal de engajamento.":wcTrend<=-2?"Respostas foram diminuindo — possível desistência progressiva.":"Nível de engajamento estável ao longo do desafio.";
+  consistencyBlocks.push({title:"Evolução de engajamento",text:evolucao});
+  const clamp=(v)=>Math.max(0,Math.min(100,Math.round(v)));
+  const pFinal=clamp(persist),aFinal=clamp(adapt),cFinal=clamp(comm),eFinal=clamp(emoc);
+  const total=Math.round((pFinal+aFinal+cFinal+eFinal)/4);
+  return{scores:{persist:pFinal,adapt:aFinal,comm:cFinal,emoc:eFinal,total},flags,consistencyBlocks,profile:buildProfile(pFinal,aFinal,cFinal,eFinal)};
+}
+
+function buildProfile(p,a,c,e){
+  const hi=v=>v>=65,lo=v=>v<42;
+  if(hi(p)&&hi(a)&&hi(c))return "Vendedor completo — persistente, adaptável e comunicativo";
+  if(hi(p)&&hi(a))return "Vendedor persistente e adaptável — alto potencial";
+  if(hi(p)&&lo(a))return "Persistente mas repetitivo — precisa variar a abordagem";
+  if(hi(a)&&lo(p))return "Adaptável mas cede rápido — trabalhar a persistência";
+  if(hi(c)&&lo(a))return "Bom comunicador, pouca adaptação estratégica";
+  if(hi(e)&&lo(c))return "Resiliente sob pressão, comunicação a desenvolver";
+  if(lo(p)&&lo(a))return "Iniciante — desenvolver persistência e adaptação";
+  const avg=(p+a+c+e)/4;
+  if(avg>=65)return "Perfil equilibrado — bom potencial";
+  if(avg>=45)return "Perfil em desenvolvimento — base sólida";
+  return "Perfil iniciante — potencial a desenvolver com prática";
+}
+
+function renderCompany(){
+  switchTab("list");
+  const sorted=[...candidates].sort((a,b)=>b.scores.total-a.scores.total);
+  const listEl=document.getElementById("panel-list");
+  if(!sorted.length){listEl.innerHTML="<div style='text-align:center;padding:2.5rem;color:#666'><p style='font-size:14px'>Nenhum candidato ainda</p></div>";return;}
+  listEl.innerHTML=sorted.map((c,i)=>{
+    const medal=i===0?"🥇":i===1?"🥈":i===2?"🥉":"";
+    const sCls=c.scores.total>=70?"tg":c.scores.total>=45?"ta":"tr";
+    const negFlags=c.flags.filter(f=>!f.positive).length;
+    return `<div class="card" style="cursor:pointer;margin-bottom:10px" onclick="showCandidate(${c.id})"><div style="display:flex;align-items:center;gap:11px"><div class="avatar" style="background:#f5f5f0">${c.name.split(" ").map(w=>w[0]).join("").slice(0,2).toUpperCase()}</div><div style="flex:1"><div style="display:flex;align-items:center;gap:6px;margin-bottom:3px"><span style="font-size:14px;font-weight:500">${medal} ${c.name}</span><span class="tag ${sCls}">${c.scores.total} pts</span>${negFlags>0?`<span class="tag ta">${negFlags} alertas</span>`:""}</div><div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:3px"><span style="font-size:11px;color:#666">P: <b>${c.scores.persist}</b></span><span style="font-size:11px;color:#666">A: <b>${c.scores.adapt}</b></span><span style="font-size:11px;color:#666">C: <b>${c.scores.comm}</b></span><span style="font-size:11px;color:#666">E: <b>${c.scores.emoc}</b></span></div><p style="font-size:12px;color:#666;font-style:italic">${c.profile}</p></div><span style="color:#aaa">›</span></div></div>`;
+  }).join("");
+  document.getElementById("panel-flags").innerHTML=`<p style="font-size:12px;color:#666;margin-bottom:1rem">Candidatos com alertas comportamentais</p>${sorted.filter(c=>c.flags.filter(f=>!f.positive).length>0).map(c=>`<div class="card" style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="font-size:14px;font-weight:500">${c.name}</span><span class="tag ${c.scores.total>=70?"tg":c.scores.total>=45?"ta":"tr"}">${c.scores.total} pts</span></div>${c.flags.filter(f=>!f.positive).map(f=>`<div class="flag-row"><div class="signal-dot" style="background:#A32D2D"></div><p style="font-size:13px">${f.text}</p></div>`).join("")}</div>`).join("")||"<p style='font-size:13px;color:#666'>Nenhum alerta.</p>"}`;
+}
+
+function showCandidate(id){
+  const c=candidates.find(x=>x.id===id);if(!c)return;
+  switchTab("detail");
+  const sCls=c.scores.total>=70?"tg":c.scores.total>=45?"ta":"tr";
+  document.getElementById("panel-detail").innerHTML=`<div style="display:flex;align-items:center;gap:12px;margin-bottom:1.25rem"><div class="avatar" style="width:48px;height:48px;font-size:16px;background:#f5f5f0">${c.name.split(" ").map(w=>w[0]).join("").slice(0,2).toUpperCase()}</div><div><h3 style="font-size:16px;font-weight:500">${c.name}</h3><p style="font-size:12px;color:#666;margin-bottom:4px">${c.profile}</p><span class="tag ${sCls}">Score: ${c.scores.total}/100</span></div></div><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:1.25rem"><div class="mcard"><div class="mlabel">Persistência</div><div class="mval">${c.scores.persist}</div></div><div class="mcard"><div class="mlabel">Adaptação</div><div class="mval">${c.scores.adapt}</div></div><div class="mcard"><div class="mlabel">Comunicação</div><div class="mval">${c.scores.comm}</div></div><div class="mcard"><div class="mlabel">Controle</div><div class="mval">${c.scores.emoc}</div></div></div><div class="card" style="margin-bottom:1rem"><p style="font-size:12px;font-weight:500;color:#666;margin-bottom:10px">Sinais detectados</p>${c.flags.map(f=>`<div class="flag-row"><div class="signal-dot" style="background:${f.positive?'#3B6D11':'#A32D2D'}"></div><p style="font-size:13px">${f.text}</p></div>`).join("")||"<p style='font-size:13px;color:#666'>Nenhum sinal.</p>"}</div><div class="card" style="margin-bottom:1rem"><p style="font-size:12px;font-weight:500;color:#666;margin-bottom:10px">Respostas no desafio</p>${c.responses.map(r=>`<div style="margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid #f0f0e8"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><p style="font-size:12px;font-weight:500;color:#666">Rodada ${r.round}: "${r.clientMsg}"</p><span style="font-size:11px;color:#aaa">${Math.round(r.elapsed)}s</span></div><div class="rq">${r.response}</div></div>`).join("")}</div><button class="btn-secondary" onclick="switchTab('list')" style="width:100%">← Voltar para lista</button>`;
+}
+
+function switchTab(t){
+  ["l","d","f"].forEach((k,i)=>{
+    const names=["list","detail","flags"];
+    document.getElementById("tab-"+k).className="tab-btn"+(t===names[i]?" active":"");
+    document.getElementById("panel-"+names[i]).style.display=t===names[i]?"block":"none";
+  });
+}
+</script>
+</body>
+</html>
+
